@@ -13,10 +13,9 @@ public class Book
     [Required]
     public string Author { get; set; }
     
-    public int Year { get; set; }
+    public int? Year { get; set; }
     
+    public string? Genre { get; set; }
     [Required]
-    public string Genre { get; set; }
-    
     public string Description { get; set; }
 }

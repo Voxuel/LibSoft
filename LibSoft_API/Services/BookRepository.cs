@@ -3,35 +3,35 @@ using LibSoft_Models;
 
 namespace LibSoft_API.Services;
 
-public class BookRepository : IServiceRepository<Book>
+public class BookRepository : IBookRepository
 {
     private readonly LibSoftDbContext _context;
     public BookRepository(LibSoftDbContext context)
     {
         _context = context;
     }
-    
-    public Task<Book> GetAll()
+
+    public Task<T> GetAllBooks<T>()
     {
         throw new NotImplementedException();
     }
 
-    public Task<Book> GetItemById(int id)
+    public Task<T> GetBookById<T>(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<Book> CreateItem(Book entity)
+    public Task<T> CreateBook<T>(BookDTO bookCreate)
     {
         throw new NotImplementedException();
     }
 
-    public Task<Book> UpdateItem(Book entity)
+    public Task<T> UpdateBook<T>(BookDTO bookUpdate)
     {
         throw new NotImplementedException();
     }
 
-    public Task<Book> DeleteItem(int id)
+    public Task<T> DeleteBook<T>(int id)
     {
         throw new NotImplementedException();
     }

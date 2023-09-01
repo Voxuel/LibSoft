@@ -36,7 +36,7 @@ public class LibSoftDbContext : DbContext
         });
         modelBuilder.Entity<Book>().HasData(new Book
         {
-            Id = 1,
+            Id = 3,
             Title = "The Highborn's demise",
             Author = "Martin Andersson",
             Description = "Set in 1800 england, a story about a beggars rise to become an assassin for" +
