@@ -1,5 +1,6 @@
 ﻿using LibSoft_API.Data;
 using LibSoft_Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibSoft_API.Services;
 
@@ -11,28 +12,52 @@ public class BookRepository : IBookRepository
         _context = context;
     }
 
-    public Task<T> GetAllBooks<T>()
+    public async Task<IEnumerable<Book>> GetAllBooks()
     {
-        throw new NotImplementedException();
+        var result = await _context.Books.ToListAsync();
+
+        return result.Any() ? result : null;
     }
 
-    public Task<T> GetBookById<T>(int id)
+    public async Task<Book> GetBookById(int id)
     {
-        throw new NotImplementedException();
+        var result = await _context.Books.FirstOrDefaultAsync(b => b.Id == id);
+
+        return result;
     }
 
-    public Task<T> CreateBook<T>(BookDTO bookCreate)
+    public async Task<Book> CreateBook(Book bookCreate)
     {
-        throw new NotImplementedException();
+        var result = await _context.Books.AddAsync(bookCreate);
+        await _context.SaveChangesAsync();
+        return result.Entity;
     }
 
-    public Task<T> UpdateBook<T>(BookDTO bookUpdate)
+    public async Task<Book> UpdateBook(Book bookUpdate)
     {
-        throw new NotImplementedException();
+        var result = await _context.Books.FirstOrDefaultAsync(b =>
+            b.Id == bookUpdate.Id);
+
+        if (result == null) return null;
+
+        result.Title = bookUpdate.Title;
+        result.Description = bookUpdate.Description;
+        result.Genre = bookUpdate.Genre;
+        result.Author = bookUpdate.Author;
+        result.Year = bookUpdate.Year;
+        result.Id = bookUpdate.Id;
+
+        await _context.SaveChangesAsync();
+        return result;
     }
 
-    public Task<T> DeleteBook<T>(int id)
+    public async Task<Book> DeleteBook(int id)
     {
-        throw new NotImplementedException();
+        var result = await _context.Books.FirstOrDefaultAsync(b => b.Id == id);
+        if (result == null) return null;
+
+        _context.Books.Remove(result);
+        await _context.SaveChangesAsync();
+        return result;
     }
 }
