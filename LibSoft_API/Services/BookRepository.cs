@@ -1,6 +1,8 @@
 ﻿using LibSoft_API.Data;
 using LibSoft_Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace LibSoft_API.Services;
 
@@ -28,9 +30,19 @@ public class BookRepository : IBookRepository
 
     public async Task<Book> CreateBook(Book bookCreate)
     {
-        var result = await _context.Books.AddAsync(bookCreate);
+        var found = await _context.Books.FirstOrDefaultAsync(b =>
+            b.Title == bookCreate.Title && 
+            b.Author == bookCreate.Author);
+        if (found == null)
+        {
+            bookCreate.NumbersInStock = 1;
+            var result = await _context.Books.AddAsync(bookCreate);
+            await _context.SaveChangesAsync();
+            return result.Entity;
+        }
+        found.NumbersInStock += 1;
         await _context.SaveChangesAsync();
-        return result.Entity;
+        return found;
     }
 
     public async Task<Book> UpdateBook(Book bookUpdate)
