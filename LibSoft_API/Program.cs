@@ -72,5 +72,27 @@ app.MapPost("/api/book/", async (IValidator<BookCreateDTO> validator, IMapper ma
 }).WithName("CreateBook").Accepts<BookCreateDTO>("application/json").Produces<APIResponse>(201)
     .Produces(400);
 
+app.MapPut("/api/book/",
+    async (IMapper mapper, IValidator<BookUpdateDTO> validator,IBookRepository repo,
+        [FromBody] BookUpdateDTO book_u_dto) =>
+{
+    var response = new APIResponse(){IsSuccess = false, StatusCode = HttpStatusCode.BadRequest};
+    ValidationResult validationResult = await validator.ValidateAsync(book_u_dto);
+
+    if (!validationResult.IsValid)
+    {
+        response.ErrorMessages.Add(validationResult.Errors.FirstOrDefault().ToString());
+    }
+
+    var book = mapper.Map<Book>(book_u_dto);
+    var result = await repo.UpdateBook(book);
+    
+    response.Result = result;
+    response.IsSuccess = true;
+    response.StatusCode = HttpStatusCode.NoContent;
+    return Results.Ok(response);
+}).WithName("UpdateBook").Accepts<BookUpdateDTO>("application/json")
+    .Produces<APIResponse>(200)
+    .Produces(400);
 
 app.Run();
