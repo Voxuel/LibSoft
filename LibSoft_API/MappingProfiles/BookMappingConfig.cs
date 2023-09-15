@@ -10,5 +10,6 @@ public class BookMappingConfig : Profile
         CreateMap<Book,BookDTO>().ReverseMap();
         CreateMap<Book,BookCreateDTO>().ReverseMap();
         CreateMap<Book, BookUpdateDTO>().ReverseMap();
+        CreateMap<IEnumerable<Book>, IEnumerable<BookDTO>>().ReverseMap();
     }
 }

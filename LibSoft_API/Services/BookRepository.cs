@@ -102,4 +102,20 @@ public class BookRepository : IBookRepository
         await _context.SaveChangesAsync();
         return result;
     }
+
+    public async Task<IEnumerable<Book>> SearchByAuthor(string auth)
+    {
+        var result = await _context.Books.Where(b =>
+            b.Author == auth).ToListAsync();
+
+        return result.Any() ? result : null;
+    }
+
+    public async Task<IEnumerable<Book>> SearchByGenre(string genre)
+    {
+        var result = await _context.Books.Where(b =>
+            b.Genre == genre).ToListAsync();
+
+        return result.Any() ? result : null;
+    }
 }
