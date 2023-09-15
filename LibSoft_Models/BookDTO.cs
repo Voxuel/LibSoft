@@ -1,4 +1,6 @@
-﻿namespace LibSoft_Models;
+﻿using System.Text.Json.Serialization;
+
+namespace LibSoft_Models;
 
 public class BookDTO
 {

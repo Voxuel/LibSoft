@@ -150,13 +150,16 @@ public static class BookEndpoint
 
             var result = await repo.SearchByAuthor(auth);
 
+            var bookDtos = mapper.Map<IEnumerable<BookDTO>>(result);
+            
             if (result.Any())
             {
-                response.Result = result;
+                response.Result = bookDtos;
                 response.IsSuccess = true;
                 response.StatusCode = HttpStatusCode.OK;
                 return Results.Ok(response);
             }
+
             response.StatusCode = HttpStatusCode.NotFound;
             response.Result = result;
             return Results.NotFound(response);
@@ -167,13 +170,16 @@ public static class BookEndpoint
 
             var result = await repo.SearchByGenre(genre);
 
+            var booksDtos = mapper.Map<IEnumerable<BookDTO>>(result);
+
             if (result.Any())
             {
-                response.Result = result;
+                response.Result = booksDtos;
                 response.IsSuccess = true;
                 response.StatusCode = HttpStatusCode.OK;
                 return Results.Ok(response);
             }
+
             response.StatusCode = HttpStatusCode.NotFound;
             response.Result = result;
             return Results.NotFound(response);
