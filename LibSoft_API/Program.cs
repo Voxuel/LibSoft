@@ -23,52 +23,74 @@ var app = builder.Build();
 // Gets all books.
 app.MapGet("/api/book",async (IBookRepository repo) =>
 {
-    var response = new APIResponse
+    try
     {
-        Result = await repo.GetAllBooks(),
-        IsSuccess = true,
-        StatusCode = HttpStatusCode.OK
-    };
-    return Results.Ok(response);
+        var response = new APIResponse
+        {
+            Result = await repo.GetAllBooks(),
+            IsSuccess = true,
+            StatusCode = HttpStatusCode.OK
+        };
+        return Results.Ok(response);
+    }
+    catch (Exception e)
+    {
+        return Results.BadRequest(e);
+    }
 }).WithName("GetAllBooks").Produces<APIResponse>(200);
 
 // Gets book by id.
 app.MapGet("/api/book/{id:int}", async (IBookRepository repo, int id) =>
 {
-    var response = new APIResponse();
-
-    var result = await repo.GetBookById(id);
-    if (result == null)
+    try
     {
-        response.IsSuccess = false;
-        response.StatusCode = HttpStatusCode.NotFound;
-        response.ErrorMessages.Add("Invalid ID");
-        return Results.NotFound(response);
+        var response = new APIResponse();
+
+        var result = await repo.GetBookById(id);
+        if (result == null)
+        {
+            response.IsSuccess = false;
+            response.StatusCode = HttpStatusCode.NotFound;
+            response.ErrorMessages.Add("Invalid ID");
+            return Results.NotFound(response);
+        }
+
+        response.IsSuccess = true;
+        response.StatusCode = HttpStatusCode.OK;
+        response.Result = result;
+        return Results.Ok(response);
     }
-    response.IsSuccess = true;
-    response.StatusCode = HttpStatusCode.OK;
-    response.Result = result;
-    return Results.Ok(response);
+    catch (Exception e)
+    {
+        return Results.BadRequest(e);
+    }
 });
 
 // Creates new book or adds another already existing copy with the same name and author.
 app.MapPost("/api/book/", async (IValidator<BookCreateDTO> validator, IMapper mapper,
     IBookRepository repo,[FromBody] BookCreateDTO book_c_dto) =>
 {
-    APIResponse response = new APIResponse();
-    ValidationResult validationResult = await validator.ValidateAsync(book_c_dto);
+    try
+    {
+        APIResponse response = new APIResponse();
+        ValidationResult validationResult = await validator.ValidateAsync(book_c_dto);
 
-    if (!validationResult.IsValid) return Results.BadRequest(response);
+        if (!validationResult.IsValid) return Results.BadRequest(response);
 
-    var book = mapper.Map<Book>(book_c_dto);
-    var result = await repo.CreateBook(book);
+        var book = mapper.Map<Book>(book_c_dto);
+        var result = await repo.CreateBook(book);
 
-    var bookDto = mapper.Map<BookDTO>(book);
+        var bookDto = mapper.Map<BookDTO>(book);
 
-    response.Result = bookDto;
-    response.IsSuccess = true;
-    response.StatusCode = HttpStatusCode.Created;
-    return Results.Ok(response);
+        response.Result = bookDto;
+        response.IsSuccess = true;
+        response.StatusCode = HttpStatusCode.Created;
+        return Results.Ok(response);
+    }
+    catch (Exception e)
+    {
+        return Results.BadRequest(e);
+    }
 }).WithName("CreateBook").Accepts<BookCreateDTO>("application/json").Produces<APIResponse>(201)
     .Produces(400);
 
@@ -76,22 +98,54 @@ app.MapPut("/api/book/",
     async (IMapper mapper, IValidator<BookUpdateDTO> validator,IBookRepository repo,
         [FromBody] BookUpdateDTO book_u_dto) =>
 {
-    var response = new APIResponse(){IsSuccess = false, StatusCode = HttpStatusCode.BadRequest};
-    ValidationResult validationResult = await validator.ValidateAsync(book_u_dto);
-
-    if (!validationResult.IsValid)
+    try
     {
-        response.ErrorMessages.Add(validationResult.Errors.FirstOrDefault().ToString());
-    }
+        var response = new APIResponse() {IsSuccess = false, StatusCode = HttpStatusCode.BadRequest};
+        ValidationResult validationResult = await validator.ValidateAsync(book_u_dto);
 
-    var book = mapper.Map<Book>(book_u_dto);
-    var result = await repo.UpdateBook(book);
-    
-    response.Result = result;
-    response.IsSuccess = true;
-    response.StatusCode = HttpStatusCode.NoContent;
-    return Results.Ok(response);
+        if (!validationResult.IsValid)
+        {
+            response.ErrorMessages.Add(validationResult.Errors.FirstOrDefault().ToString());
+        }
+
+        var book = mapper.Map<Book>(book_u_dto);
+        var result = await repo.UpdateBook(book);
+
+        response.Result = result;
+        response.IsSuccess = true;
+        response.StatusCode = HttpStatusCode.NoContent;
+        return Results.Ok(response);
+    }
+    catch (Exception e)
+    {
+        return Results.BadRequest(e);
+    }
 }).WithName("UpdateBook").Accepts<BookUpdateDTO>("application/json")
+    .Produces<APIResponse>(200)
+    .Produces(500);
+
+app.MapDelete("/api/book/{id:int}", async (IBookRepository repo, int id) =>
+{
+    var response = new APIResponse() {IsSuccess = false, StatusCode = HttpStatusCode.BadRequest};
+    try
+    {
+        var result = await repo.DeleteBook(id);
+        if (result == null)
+        {
+            response.ErrorMessages.Add("Invalid ID");
+            response.StatusCode = HttpStatusCode.NotFound;
+            return Results.NotFound(response);
+        }
+        response.IsSuccess = true;
+        response.StatusCode = HttpStatusCode.OK;
+        response.Result = result;
+        return Results.Ok(response);
+    }
+    catch (Exception e)
+    {
+        return Results.BadRequest(e);
+    }
+}).WithName("DeleteBook")
     .Produces<APIResponse>(200)
     .Produces(400);
 

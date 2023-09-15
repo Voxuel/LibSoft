@@ -18,4 +18,6 @@ public class Book
     public string? Genre { get; set; }
     [Required]
     public string Description { get; set; }
+
+    public int NumbersInStock { get; set; }
 }
