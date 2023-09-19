@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibSoft_API", "LibSoft_API\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibSoft_Models", "LibSoft_Models\LibSoft_Models.csproj", "{34C5B901-91DB-4EDF-993B-C5F59AB5BC26}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibSoft_Web", "LibSoft_Web\LibSoft_Web.csproj", "{BBDA2B57-0264-4A8A-ADA2-60FDEF23B52D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{34C5B901-91DB-4EDF-993B-C5F59AB5BC26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34C5B901-91DB-4EDF-993B-C5F59AB5BC26}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34C5B901-91DB-4EDF-993B-C5F59AB5BC26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBDA2B57-0264-4A8A-ADA2-60FDEF23B52D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBDA2B57-0264-4A8A-ADA2-60FDEF23B52D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBDA2B57-0264-4A8A-ADA2-60FDEF23B52D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBDA2B57-0264-4A8A-ADA2-60FDEF23B52D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
