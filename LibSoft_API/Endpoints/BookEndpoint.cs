@@ -14,7 +14,7 @@ public static class BookEndpoint
     public static void AddBookEndspoints(this IEndpointRouteBuilder app)
     {
 // Gets all books.
-        app.MapGet("/api/book",
+        app.MapGet("/api/book/",
                 async (IBookRepository repo) =>
                 {
                     try
@@ -79,7 +79,7 @@ public static class BookEndpoint
                         var book = mapper.Map<Book>(book_c_dto);
                         var result = await repo.CreateBook(book);
 
-                        var bookDto = mapper.Map<BookDTO>(book);
+                        var bookDto = mapper.Map<BookDTO>(result);
 
                         response.Result = bookDto;
                         response.IsSuccess = true;
@@ -95,7 +95,7 @@ public static class BookEndpoint
             .Produces<APIResponse>(201)
             .Produces(400);
 
-        app.MapPut("/api/book",
+        app.MapPut("/api/book/",
                 async (IMapper mapper, IValidator<BookUpdateDTO> validator, IBookRepository repo,
                     [FromBody] BookUpdateDTO book_u_dto) =>
                 {

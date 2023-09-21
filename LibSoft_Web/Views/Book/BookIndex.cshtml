@@ -1,0 +1,43 @@
+﻿@model IEnumerable<LibSoft_Models.BookDTO>
+
+@{
+    ViewData["Title"] = "BookIndex";
+}
+
+<h1>Books</h1>
+<p>
+    
+</p>
+
+<table class="table">
+    <thead>
+    <th>
+        @Html.DisplayNameFor(model => model.Title)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.Author)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.Description)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.Genre)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.Year)
+    </th>
+    </thead>
+    
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.Title)</td>
+            <td>@Html.DisplayFor(modelItem => item.Author)</td>
+            <td>@Html.DisplayFor(modelItem => item.Description)</td>
+            <td>@Html.DisplayFor(modelItem => item.Genre)</td>
+            <td>@Html.DisplayFor(modelItem => item.Year)</td>
+        </tr>
+    }
+    </tbody>
+</table>

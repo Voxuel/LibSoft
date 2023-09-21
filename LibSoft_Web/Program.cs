@@ -1,7 +1,13 @@
+using LibSoft_Web;
+using LibSoft_Web.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpClient<IBookService, BookService>();
+builder.Services.AddScoped<IBookService, BookService>();
+StaticDetails.BookApiBase = builder.Configuration["ServiceUrls:LibSoft_API"];
 
 var app = builder.Build();
 
