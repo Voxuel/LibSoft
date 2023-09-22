@@ -9,4 +9,6 @@ public interface IBookService
     Task<T> UpdateAsync<T>(BookDTO bookDto);
     Task<T> CreateAsync<T>(BookDTO bookDto);
     Task<T> DeleteAsync<T>(int id);
+    Task<T> SearchByAuthor<T>(string queryString);
+    Task<T> SearchByGenre<T>(string queryString);
 }

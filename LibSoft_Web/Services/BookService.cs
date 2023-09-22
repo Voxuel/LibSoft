@@ -21,9 +21,13 @@ public class BookService : BaseService , IBookService
         });
     }
 
-    public Task<T> GetById<T>(int id)
+    public async Task<T> GetById<T>(int id)
     {
-        throw new NotImplementedException();
+        return await SendAsync<T>(new ApiRequest()
+        {
+            ApiType = StaticDetails.ApiType.GET,
+            Url = StaticDetails.BookApiBase + $"/api/book/{id}"
+        });
     }
 
     public Task<T> UpdateAsync<T>(BookDTO bookDto)
@@ -39,5 +43,23 @@ public class BookService : BaseService , IBookService
     public Task<T> DeleteAsync<T>(int id)
     {
         throw new NotImplementedException();
+    }
+
+    public Task<T> SearchByAuthor<T>(string queryString)
+    {
+        return SendAsync<T>(new ApiRequest()
+        {
+            ApiType = StaticDetails.ApiType.GET,
+            Url = StaticDetails.BookApiBase + $"/api/book/author/{queryString}"
+        });
+    }
+
+    public Task<T> SearchByGenre<T>(string queryString)
+    {
+        return SendAsync<T>(new ApiRequest()
+        {
+            ApiType = StaticDetails.ApiType.GET,
+            Url = StaticDetails.BookApiBase + $"/api/book/genre/{queryString}"
+        });
     }
 }
