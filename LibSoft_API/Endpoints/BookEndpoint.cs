@@ -40,7 +40,7 @@ public static class BookEndpoint
                 {
                     try
                     {
-                        var response = new APIResponse();
+                        var response = new APIResponse() {IsSuccess = false, StatusCode = HttpStatusCode.BadRequest};
 
                         var result = await repo.GetBookById(id);
                         if (result == null)
@@ -71,8 +71,8 @@ public static class BookEndpoint
                 {
                     try
                     {
-                        APIResponse response = new APIResponse();
-                        ValidationResult validationResult = await validator.ValidateAsync(book_c_dto);
+                        var response = new APIResponse() {IsSuccess = false, StatusCode = HttpStatusCode.BadRequest};
+                        var validationResult = await validator.ValidateAsync(book_c_dto);
 
                         if (!validationResult.IsValid) return Results.BadRequest(response);
 
@@ -102,7 +102,7 @@ public static class BookEndpoint
                     try
                     {
                         var response = new APIResponse() {IsSuccess = false, StatusCode = HttpStatusCode.BadRequest};
-                        ValidationResult validationResult = await validator.ValidateAsync(book_u_dto);
+                        var validationResult = await validator.ValidateAsync(book_u_dto);
 
                         if (!validationResult.IsValid)
                         {

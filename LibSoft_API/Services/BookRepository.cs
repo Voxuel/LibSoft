@@ -92,7 +92,7 @@ public class BookRepository : IBookRepository
         var result = await _context.Books.FirstOrDefaultAsync(b => b.Id == id);
         if (result == null) return null;
 
-        if (result.NumbersInStock > 0)
+        if (result.NumbersInStock > 1)
         {
             result.NumbersInStock -= 1;
             await _context.SaveChangesAsync();

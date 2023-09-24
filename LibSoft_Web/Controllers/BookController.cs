@@ -47,4 +47,6 @@ public class BookController : Controller
         BookDTO book_dto_detailed = JsonConvert.DeserializeObject<BookDTO>(Convert.ToString(resDto.Result));
         return View(book_dto_detailed);
     }
+    
+    
 }
