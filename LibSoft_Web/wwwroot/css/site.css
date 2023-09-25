@@ -20,3 +20,17 @@ html {
 body {
   margin-bottom: 60px;
 }
+.filter-container{
+  display: flex;
+}
+.filter-container .form{
+  display: flex;
+  justify-content: space-between;
+}
+.order-by-container{
+  
+}
+.search-filter-container{
+  
+}
+ 

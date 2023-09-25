@@ -30,19 +30,33 @@ public class BookService : BaseService , IBookService
         });
     }
 
-    public Task<T> UpdateAsync<T>(BookDTO bookDto)
+    public async Task<T> UpdateAsync<T>(BookDTO bookDto)
     {
-        throw new NotImplementedException();
+        return await SendAsync<T>(new ApiRequest()
+        {
+            ApiType = StaticDetails.ApiType.PUT,
+            Url = StaticDetails.BookApiBase + $"/api/book/",
+            Data = bookDto
+        });
     }
 
-    public Task<T> CreateAsync<T>(BookDTO bookDto)
+    public async Task<T> CreateAsync<T>(BookDTO bookDto)
     {
-        throw new NotImplementedException();
+        return await SendAsync<T>(new ApiRequest()
+        {
+            ApiType = StaticDetails.ApiType.POST,
+            Url = StaticDetails.BookApiBase + $"/api/book/",
+            Data = bookDto
+        });
     }
 
-    public Task<T> DeleteAsync<T>(int id)
+    public async Task<T> DeleteAsync<T>(int id)
     {
-        throw new NotImplementedException();
+        return await SendAsync<T>(new ApiRequest()
+        {
+            ApiType = StaticDetails.ApiType.DELETE,
+            Url = StaticDetails.BookApiBase + $"/api/book/{id}"
+        });
     }
 
     public Task<T> SearchByAuthor<T>(string queryString)

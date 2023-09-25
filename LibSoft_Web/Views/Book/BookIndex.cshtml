@@ -3,22 +3,31 @@
 
 @{
     ViewData["Title"] = "BookIndex";
-    
+
 }
 
 <h1>Books</h1>
+    <a asp-action="Create" asp-controller="Book" class="btn btn-success">Add Book</a>
+    <br/>
+<div class="filter-container">
+    <form asp-controller="Book" asp-action="BookIndex">
+        <p class="order-by-container">
+            @Html.DropDownList("orderBy", new List<SelectListItem>()
+            {
+                new SelectListItem() {Text = "Author name", Value = "Author name"},
+                new SelectListItem() {Text = "Title Name", Value = "Title name"},
+            }, "Order by")
+            @Html.DropDownList("searchType", new List<SelectListItem>()
+            {
+                new SelectListItem() {Text = "Author", Value = "Author"},
+                new SelectListItem() {Text = "Genre", Value = "Genre"}
+            }, "Search by")
+            <input type="text" name="SearchString"/>
+            <input type="submit" value="Filter"/>
+        </p>
+    </form>
+</div>
 
-<form asp-controller="Book" asp-action="BookIndex">
-    <p>
-        @Html.DropDownList("searchType",new List<SelectListItem>()
-        {
-            new SelectListItem(){Text = "Author", Value = "Author"},
-            new SelectListItem(){Text = "Genre", Value = "Genre"}
-        },"Search by"),
-        <input type="text" name="SearchString"/>
-        <input type="submit" value="Filter"/>
-    </p>
-</form>
 
 <table class="table">
     <thead>
@@ -38,7 +47,7 @@
         @Html.DisplayNameFor(model => model.NumbersInStock)
     </th>
     </thead>
-    
+
     <tbody>
     @foreach (var item in Model)
     {
@@ -50,7 +59,8 @@
             <td>@Html.DisplayFor(modelItem => item.NumbersInStock)</td>
             <td>
                 <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
-                
+                <a asp-action="Update" asp-route-id="@item.Id" class="btn btn-success">Update</a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
             </td>
         </tr>
     }
