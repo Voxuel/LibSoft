@@ -12,11 +12,12 @@ namespace LibSoft_API.Services;
 public class BookRepository : IBookRepository
 {
     private readonly LibSoftDbContext _context;
+
     public BookRepository(LibSoftDbContext context)
     {
         _context = context;
     }
-    
+
     /// <summary>
     /// Gets all books in the database.
     /// </summary>
@@ -27,6 +28,7 @@ public class BookRepository : IBookRepository
 
         return result.Any() ? result : null;
     }
+
     /// <summary>
     /// Gets the book with the given ID.
     /// </summary>
@@ -38,7 +40,7 @@ public class BookRepository : IBookRepository
 
         return result;
     }
-    
+
     /// <summary>
     /// Creates new entity of type "Book" and adds it to the database.
     /// </summary>
@@ -46,20 +48,12 @@ public class BookRepository : IBookRepository
     /// <returns>TResult of type "Book".</returns>
     public async Task<Book> CreateBook(Book bookCreate)
     {
-        var found = await _context.Books.FirstOrDefaultAsync(b =>
-            b.Title == bookCreate.Title && 
-            b.Author == bookCreate.Author);
-        if (found == null)
-        {
-            bookCreate.NumbersInStock = 1;
-            var result = await _context.Books.AddAsync(bookCreate);
-            await _context.SaveChangesAsync();
-            return result.Entity;
-        }
-        found.NumbersInStock += 1;
+        bookCreate.NumbersInStock = 1;
+        var result = await _context.Books.AddAsync(bookCreate);
         await _context.SaveChangesAsync();
-        return found;
+        return result.Entity;
     }
+
     /// <summary>
     /// Updates an existing entity in the database.
     /// </summary>
@@ -82,6 +76,7 @@ public class BookRepository : IBookRepository
         await _context.SaveChangesAsync();
         return result;
     }
+
     /// <summary>
     /// Deletes entity with specified ID
     /// </summary>
@@ -92,12 +87,6 @@ public class BookRepository : IBookRepository
         var result = await _context.Books.FirstOrDefaultAsync(b => b.Id == id);
         if (result == null) return null;
 
-        if (result.NumbersInStock > 1)
-        {
-            result.NumbersInStock -= 1;
-            await _context.SaveChangesAsync();
-            return result;
-        }
         _context.Books.Remove(result);
         await _context.SaveChangesAsync();
         return result;
@@ -117,5 +106,27 @@ public class BookRepository : IBookRepository
             b.Genre == genre).ToListAsync();
 
         return result.Any() ? result : null;
+    }
+
+    public async Task<Book> AddExistingCopy(int id)
+    {
+        var result = await _context.Books.FindAsync(id);
+        if (result == null) return null;
+
+        result.NumbersInStock += 1;
+        await _context.SaveChangesAsync();
+        
+        return result;
+    }
+
+    public async Task<Book> DeleteExistingCopy(int id)
+    {
+        var result = await _context.Books.FindAsync(id);
+        if (result == null) return null;
+
+        result.NumbersInStock -= 1;
+        await _context.SaveChangesAsync();
+
+        return result;
     }
 }

@@ -11,4 +11,6 @@ public interface IBookRepository
     Task<Book> DeleteBook(int id);
     Task<IEnumerable<Book>> SearchByAuthor(string auth);
     Task<IEnumerable<Book>> SearchByGenre(string genre);
+    Task<Book> AddExistingCopy(int id);
+    Task<Book> DeleteExistingCopy(int id);
 }

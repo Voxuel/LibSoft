@@ -122,7 +122,8 @@ public static class BookEndpoint
                     {
                         return Results.BadRequest(e);
                     }
-                }).WithName("UpdateBook").Accepts<BookUpdateDTO>("application/json")
+                }).WithName("UpdateBook")
+            .Accepts<BookUpdateDTO>("application/json")
             .Produces<APIResponse>(200)
             .Produces(500);
 
@@ -213,6 +214,35 @@ public static class BookEndpoint
                         return Results.BadRequest(e);
                     }
                 }).WithName("GetBooksByGenre")
+            .Produces<APIResponse>(200)
+            .Produces(400);
+
+        app.MapPatch("/api/book/{id:int}/",
+            async (IBookRepository repo, IMapper mapper, int id, string option) =>
+            {
+                try
+                {
+                    var response = new APIResponse() {IsSuccess = false, StatusCode = HttpStatusCode.BadRequest};
+
+                    var result = option.ToUpper() switch
+                    {
+                        "ADD" => await repo.AddExistingCopy(id),
+                        "DELETE" => await repo.DeleteExistingCopy(id),
+                        _ => null
+                    };
+
+                    if (result == null) return Results.NotFound();
+                    
+                    response.Result = mapper.Map<BookDTO>(result);
+                    response.StatusCode = HttpStatusCode.NoContent;
+                    response.IsSuccess = true;
+                    return Results.Ok(response);
+                }
+                catch (Exception e)
+                {
+                    return Results.BadRequest(e);
+                }
+            }).WithName("UpdateStock")
             .Produces<APIResponse>(200)
             .Produces(400);
     }
