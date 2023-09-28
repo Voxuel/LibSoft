@@ -11,6 +11,8 @@ builder.Services.AddDbContext<LibSoftDbContext>(options =>
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.AddAutoMapper(typeof(BookMappingConfig));
 builder.Services.AddScoped<IBookRepository, BookRepository>();
+
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

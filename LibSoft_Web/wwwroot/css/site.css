@@ -22,6 +22,7 @@ body {
 }
 .filter-container{
   display: flex;
+  float: left;
 }
 .filter-container .form{
   display: flex;
@@ -33,4 +34,11 @@ body {
 .search-filter-container{
   
 }
- 
+.table {
+  text-align: center;
+}
+.createbtn{
+  margin-top: 0;
+  float: right;
+  font-size: 1.5rem;
+}

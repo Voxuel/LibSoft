@@ -72,6 +72,7 @@ public class BookRepository : IBookRepository
         result.Author = bookUpdate.Author;
         result.Year = bookUpdate.Year;
         result.Id = bookUpdate.Id;
+        result.NumbersInStock = bookUpdate.NumbersInStock;
 
         await _context.SaveChangesAsync();
         return result;
