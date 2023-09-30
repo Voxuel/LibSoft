@@ -6,52 +6,59 @@
 
 }
 
-<h1>Books</h1>
-    <a asp-action="Create" asp-controller="Book" class="btn btn-success">Add Book</a>
-    <br/>
-<div class="filter-container">
-    <form asp-controller="Book" asp-action="BookIndex">
-        <p class="order-by-container">
-            @Html.DropDownList("orderBy", new List<SelectListItem>()
-            {
-                new SelectListItem() {Text = "Author name", Value = "Author name"},
-                new SelectListItem() {Text = "Title Name", Value = "Title name"},
-            }, "Order by")
-            @Html.DropDownList("searchType", new List<SelectListItem>()
-            {
-                new SelectListItem() {Text = "Author", Value = "Author"},
-                new SelectListItem() {Text = "Genre", Value = "Genre"}
-            }, "Search by")
-            <input type="text" name="SearchString"/>
-            <input type="submit" value="Filter"/>
-        </p>
-    </form>
+<h1 class="bookHeader">Books</h1>
+<div>
+    <div class="filter-container">
+        <form asp-controller="Book" asp-action="BookIndex">
+            <p class="order-by-container">
+                @Html.DropDownList("orderBy", new List<SelectListItem>()
+                {
+                    new SelectListItem() {Text = "Author name", Value = "Author name"},
+                    new SelectListItem() {Text = "Title Name", Value = "Title name"},
+                }, "Order by")
+                @Html.DropDownList("searchType", new List<SelectListItem>()
+                {
+                    new SelectListItem() {Text = "Author", Value = "Author"},
+                    new SelectListItem() {Text = "Genre", Value = "Genre"}
+                }, "Search by")
+                <input type="text" name="SearchString"/>
+                <input type="submit" value="Filter"/>
+            </p>
+        </form>
+    </div>
+    <a asp-action="Create" asp-controller="Book" class="btn btn-success createbtn">
+        Create New Book <i class="fa-solid fa-plus"></i>
+    </a>
 </div>
 
 
-<table class="table">
+<br/>
+<table class="table table-hover table-light">
     <thead>
-    <th>
+    <th scope="col">
         @Html.DisplayNameFor(model => model.Title)
     </th>
-    <th>
+    <th scope="col">
         @Html.DisplayNameFor(model => model.Author)
     </th>
-    <th>
+    <th scope="col">
         @Html.DisplayNameFor(model => model.Genre)
     </th>
-    <th>
+    <th scope="col">
         @Html.DisplayNameFor(model => model.Year)
     </th>
-    <th>
+    <th scope="col">
         @Html.DisplayNameFor(model => model.NumbersInStock)
+    </th>
+    <th scope="col">
+        <span>Options</span>
     </th>
     </thead>
 
     <tbody>
     @foreach (var item in Model)
     {
-        <tr>
+        <tr scope="row">
             <td>@Html.DisplayFor(modelItem => item.Title)</td>
             <td>@Html.DisplayFor(modelItem => item.Author)</td>
             <td>@Html.DisplayFor(modelItem => item.Genre)</td>

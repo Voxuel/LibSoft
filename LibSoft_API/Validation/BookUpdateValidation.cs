@@ -10,6 +10,7 @@ public class BookUpdateValidation : AbstractValidator<BookUpdateDTO>
         RuleFor(model => model.Title).NotEmpty();
         RuleFor(model => model.Author).NotEmpty();
         RuleFor(model => model.Description).NotEmpty();
+        RuleFor(model => model.NumbersInStock).NotEmpty();
         
         RuleFor(model => model.Title).Length(1, 50);
         RuleFor(model => model.Author).Length(1, 50);

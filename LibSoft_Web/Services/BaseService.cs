@@ -52,6 +52,9 @@ public class BaseService : IBaseService
                 case StaticDetails.ApiType.DELETE: 
                     message.Method = HttpMethod.Delete;
                     break;
+                case StaticDetails.ApiType.PATCH:
+                    message.Method = HttpMethod.Patch;
+                    break;
             }
 
             responseMessage = await client.SendAsync(message);
